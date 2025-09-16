@@ -1,6 +1,6 @@
 # Tienda de Comics
 
-# Commandos git
+# Commandos Git
 - git clone URL
 - git fetch
 - git pull
