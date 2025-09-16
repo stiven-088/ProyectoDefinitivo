@@ -1,5 +1,7 @@
 # Tienda de Comics
 
+Sistema de gestión para tienda de comics desarrollado en .NET 8 con arquitectura en capas.
+
 # Commandos Git
 - git clone URL
 - git fetch
