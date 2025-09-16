@@ -1,1 +1,1 @@
-# Tienda de Comic
+# Tienda de Comics
