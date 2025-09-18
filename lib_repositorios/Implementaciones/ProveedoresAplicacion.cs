@@ -23,12 +23,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_proveedor== 0)
+            if (entidad!.Id_proveedor == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Proveedores!.Find(entidad.Id_proveedor);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Proveedores!.Remove(entidad);
+            this.IConexion!.Proveedores!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -41,7 +43,11 @@ namespace lib_repositorios.Implementaciones
             if (entidad.Id_proveedor != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Nombre))
+                throw new Exception("lbNombreRequerido");
+
+            if (string.IsNullOrWhiteSpace(entidad.Email))
+                throw new Exception("lbEmailRequerido");
 
             this.IConexion!.Proveedores!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +56,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Proveedores> Listar()
         {
-            return this.IConexion!.Proveedores!.Take(20).ToList();
+            var proveedores = this.IConexion!.Proveedores!.Take(20).ToList();
+            return proveedores ?? new List<Proveedores>();
         }
 
         public Proveedores? Modificar(Proveedores? entidad)
@@ -61,12 +68,18 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id_proveedor == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Proveedores!.Find(entidad.Id_proveedor);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Proveedores>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Nombre = entidad.Nombre;
+            entidadExistente.Telefono = entidad.Telefono;
+            entidadExistente.Email = entidad.Email;
+            entidadExistente.Direccion = entidad.Direccion;
+            entidadExistente.Ciudad = entidad.Ciudad;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

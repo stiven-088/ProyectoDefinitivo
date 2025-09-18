@@ -26,9 +26,11 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.ComicPromociones!.Find(entidad.Id);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.ComicPromociones!.Remove(entidad);
+            this.IConexion!.ComicPromociones!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -41,7 +43,11 @@ namespace lib_repositorios.Implementaciones
             if (entidad.Id != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Estado))
+                throw new Exception("lbEstadoRequerido");
+
+            if (entidad.Fecha_asignacion == default(DateTime))
+                entidad.Fecha_asignacion = DateTime.Now;
 
             this.IConexion!.ComicPromociones!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +56,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Comic_promociones> Listar()
         {
-            return this.IConexion!.ComicPromociones!.Take(20).ToList();
+            var comicPromociones = this.IConexion!.ComicPromociones!.Take(20).ToList();
+            return comicPromociones ?? new List<Comic_promociones>();
         }
 
         public Comic_promociones? Modificar(Comic_promociones? entidad)
@@ -61,12 +68,20 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.ComicPromociones!.Find(entidad.Id);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Comic_promociones>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Fecha_asignacion = entidad.Fecha_asignacion;
+            entidadExistente.Estado = entidad.Estado;
+            entidadExistente.Aplicacion = entidad.Aplicacion;
+            entidadExistente.Tipo_promocion = entidad.Tipo_promocion;
+            entidadExistente.Observaciones = entidad.Observaciones;
+            entidadExistente.Promocion = entidad.Promocion;
+            entidadExistente.Comic = entidad.Comic;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

@@ -23,12 +23,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_devolucion== 0)
+            if (entidad!.Id_devolucion == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Devoluciones!.Find(entidad.Id_devolucion);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Devoluciones!.Remove(entidad);
+            this.IConexion!.Devoluciones!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -41,7 +43,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad.Id_devolucion != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Motivo))
+                throw new Exception("lbMotivoRequerido");
+
+            if (entidad.Cantidad_devuelta <= 0)
+                throw new Exception("lbCantidadDevueltaInvalida");
+
+            if (entidad.Fecha_inicio == default(DateTime))
+                entidad.Fecha_inicio = DateTime.Now;
 
             this.IConexion!.Devoluciones!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +59,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Devoluciones> Listar()
         {
-            return this.IConexion!.Devoluciones!.Take(20).ToList();
+            var devoluciones = this.IConexion!.Devoluciones!.Take(20).ToList();
+            return devoluciones ?? new List<Devoluciones>();
         }
 
         public Devoluciones? Modificar(Devoluciones? entidad)
@@ -58,15 +68,23 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_devolucion== 0)
+            if (entidad!.Id_devolucion == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Devoluciones!.Find(entidad.Id_devolucion);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Devoluciones>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Motivo = entidad.Motivo;
+            entidadExistente.Fecha_inicio = entidad.Fecha_inicio;
+            entidadExistente.Fecha_fin = entidad.Fecha_fin;
+            entidadExistente.Estado_devolucion = entidad.Estado_devolucion;
+            entidadExistente.Cantidad_devuelta = entidad.Cantidad_devuelta;
+            entidadExistente.Cliente = entidad.Cliente;
+            entidadExistente.Detalle_compra = entidad.Detalle_compra;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

@@ -23,12 +23,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_compra== 0)
+            if (entidad!.Id_compra == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Compras!.Find(entidad.Id_compra);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Compras!.Remove(entidad);
+            this.IConexion!.Compras!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -41,7 +43,17 @@ namespace lib_repositorios.Implementaciones
             if (entidad.Id_compra != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Nombre_comic))
+                throw new Exception("lbNombreComicRequerido");
+
+            if (entidad.Cantidad <= 0)
+                throw new Exception("lbCantidadInvalida");
+
+            if (entidad.Total <= 0)
+                throw new Exception("lbTotalInvalido");
+
+            if (entidad.Fecha_compra == default(DateTime))
+                entidad.Fecha_compra = DateTime.Now;
 
             this.IConexion!.Compras!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +62,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Compras> Listar()
         {
-            return this.IConexion!.Compras!.Take(20).ToList();
+            var compras = this.IConexion!.Compras!.Take(20).ToList();
+            return compras ?? new List<Compras>();
         }
 
         public Compras? Modificar(Compras? entidad)
@@ -61,12 +74,19 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id_compra == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Compras!.Find(entidad.Id_compra);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Compras>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Fecha_compra = entidad.Fecha_compra;
+            entidadExistente.Nombre_comic = entidad.Nombre_comic;
+            entidadExistente.Cantidad = entidad.Cantidad;
+            entidadExistente.Total = entidad.Total;
+            entidadExistente.Estado_compra = entidad.Estado_compra;
+            entidadExistente.Cliente = entidad.Cliente;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

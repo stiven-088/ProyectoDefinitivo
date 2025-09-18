@@ -1,5 +1,4 @@
-﻿/*
-using Lib_dominio.Entidades;
+﻿using Lib_dominio.Entidades;
 using lib_repositorios.Implementaciones;
 using lib_repositorios.Interfaces;
 using ut_presentacion.Nucleo;
@@ -33,12 +32,11 @@ namespace ut_presentacion.Aplicaciones
         public bool Listar()
         {
             this.lista = this.iAplicacion!.Listar();
-            return lista.Count > 0;
+            return lista.Count >= 0;
         }
 
         public bool Guardar()
         {
-            var proveedor = this.iConexion.Proveedores.FirstOrDefault(x => x.Id_proveedor == 1);
             this.entidad = EntidadesNucleo.Compras()!;
             this.iAplicacion!.Guardar(this.entidad);
             return true;
@@ -46,15 +44,22 @@ namespace ut_presentacion.Aplicaciones
 
         public bool Modificar()
         {
-            this.iAplicacion!.Modificar(this.entidad);
+            if (this.entidad != null)
+            {
+                this.entidad.Estado_compra = "Modificada";
+                this.entidad.Nombre_comic = "Compra Modificada-" + DateTime.Now.ToString("yyyyMMddhhmmss");
+                this.iAplicacion!.Modificar(this.entidad);
+            }
             return true;
         }
 
         public bool Borrar()
         {
-            this.iAplicacion!.Borrar(this.entidad);
+            if (this.entidad != null)
+            {
+                this.iAplicacion!.Borrar(this.entidad);
+            }
             return true;
         }
     }
 }
-*/

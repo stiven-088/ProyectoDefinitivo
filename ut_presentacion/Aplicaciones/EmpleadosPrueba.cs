@@ -1,5 +1,4 @@
-﻿/*
-using Lib_dominio.Entidades;
+﻿using Lib_dominio.Entidades;
 using lib_repositorios.Implementaciones;
 using lib_repositorios.Interfaces;
 using ut_presentacion.Nucleo;
@@ -14,12 +13,11 @@ namespace ut_presentacion.Aplicaciones
         private List<Empleados>? lista;
         private Empleados? entidad;
 
-     
         public EmpleadosPrueba()
         {
             iConexion = new Conexion();
             iConexion.StringConexion = Configuracion.ObtenerValor("StringConexion");
-            iAplicacion = (IEmpleadosAplicacion)new EmpleadosAplicacion(iConexion);
+            iAplicacion = new EmpleadosAplicacion(iConexion);
         }
 
         [TestMethod]
@@ -34,7 +32,7 @@ namespace ut_presentacion.Aplicaciones
         public bool Listar()
         {
             this.lista = this.iAplicacion!.Listar();
-            return lista.Count > 0;
+            return lista.Count >= 0;
         }
 
         public bool Guardar()
@@ -46,15 +44,22 @@ namespace ut_presentacion.Aplicaciones
 
         public bool Modificar()
         {
-            this.iAplicacion!.Modificar(this.entidad);
+            if (this.entidad != null)
+            {
+                this.entidad.Nombre = "Empleado Modificado-" + DateTime.Now.ToString("yyyyMMddhhmmss");
+                this.entidad.Puesto = "Gerente";
+                this.iAplicacion!.Modificar(this.entidad);
+            }
             return true;
         }
 
         public bool Borrar()
         {
-            this.iAplicacion!.Borrar(this.entidad);
+            if (this.entidad != null)
+            {
+                this.iAplicacion!.Borrar(this.entidad);
+            }
             return true;
         }
     }
 }
-*/

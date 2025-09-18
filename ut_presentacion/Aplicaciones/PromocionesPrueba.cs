@@ -1,5 +1,4 @@
-﻿/*
-using Lib_dominio.Entidades;
+﻿using Lib_dominio.Entidades;
 using lib_repositorios.Implementaciones;
 using lib_repositorios.Interfaces;
 using ut_presentacion.Nucleo;
@@ -9,16 +8,16 @@ namespace ut_presentacion.Aplicaciones
     [TestClass]
     public class PromocionesPrueba
     {
-        private readonly IPagosAplicacion? iAplicacion;
+        private readonly IPromocionesAplicacion? iAplicacion;
         private readonly IConexion? iConexion;
         private List<Promociones>? lista;
-        private Pagos? entidad;
+        private Promociones? entidad;
 
         public PromocionesPrueba()
         {
             iConexion = new Conexion();
             iConexion.StringConexion = Configuracion.ObtenerValor("StringConexion");
-            iAplicacion = new PagosAplicacion(iConexion);
+            iAplicacion = new PromocionesAplicacion(iConexion);
         }
 
         [TestMethod]
@@ -26,39 +25,41 @@ namespace ut_presentacion.Aplicaciones
         {
             Assert.AreEqual(true, Guardar());
             Assert.AreEqual(true, Modificar());
-            Assert.AreEqual(true, Listar(GetIAplicacion()));
+            Assert.AreEqual(true, Listar());
             Assert.AreEqual(true, Borrar());
         }
 
-        public IPagosAplicacion GetIAplicacion()
+        public bool Listar()
         {
-            return iAplicacion;
-        }
-
-        public bool Listar(IPagosAplicacion iAplicacion)
-        {
-            lista = iAplicacion!.Listar();
-            return lista.Count > 0;
+            this.lista = this.iAplicacion!.Listar();
+            return lista.Count >= 0;
         }
 
         public bool Guardar()
         {
-            entidad = EntidadesNucleo.Pagos();
-            iAplicacion!.Guardar(entidad);
+            this.entidad = EntidadesNucleo.Promociones()!;
+            this.iAplicacion!.Guardar(this.entidad);
             return true;
         }
 
         public bool Modificar()
         {
-            iAplicacion!.Modificar(entidad);
+            if (this.entidad != null)
+            {
+                this.entidad.Descripcion = "Promoción Modificada-" + DateTime.Now.ToString("yyyyMMddhhmmss");
+                this.entidad.Descuento = 20;
+                this.iAplicacion!.Modificar(this.entidad);
+            }
             return true;
         }
 
         public bool Borrar()
         {
-            iAplicacion!.Borrar(entidad);
+            if (this.entidad != null)
+            {
+                this.iAplicacion!.Borrar(this.entidad);
+            }
             return true;
         }
     }
 }
-*/

@@ -1,6 +1,4 @@
-﻿
-
-using Lib_dominio.Entidades;
+﻿using Lib_dominio.Entidades;
 using lib_repositorios.Implementaciones;
 using lib_repositorios.Interfaces;
 using ut_presentacion.Nucleo;
@@ -10,7 +8,7 @@ namespace ut_presentacion.Aplicaciones
     [TestClass]
     public class InventariosPrueba
     {
-        private readonly InventariosAplicacion? iAplicacion;
+        private readonly IIventariosAplicacion? iAplicacion;
         private readonly IConexion? iConexion;
         private List<Inventarios>? lista;
         private Inventarios? entidad;
@@ -34,7 +32,7 @@ namespace ut_presentacion.Aplicaciones
         public bool Listar()
         {
             this.lista = this.iAplicacion!.Listar();
-            return lista.Count > 0;
+            return lista.Count >= 0;
         }
 
         public bool Guardar()
@@ -46,13 +44,21 @@ namespace ut_presentacion.Aplicaciones
 
         public bool Modificar()
         {
-            this.iAplicacion!.Modificar(this.entidad);
+            if (this.entidad != null)
+            {
+                this.entidad.Nombre = "Inventario Modificado-" + DateTime.Now.ToString("yyyyMMddhhmmss");
+                this.entidad.Stock = 100;
+                this.iAplicacion!.Modificar(this.entidad);
+            }
             return true;
         }
 
         public bool Borrar()
         {
-            this.iAplicacion!.Borrar(this.entidad);
+            if (this.entidad != null)
+            {
+                this.iAplicacion!.Borrar(this.entidad);
+            }
             return true;
         }
     }

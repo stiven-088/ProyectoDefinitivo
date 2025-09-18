@@ -23,12 +23,15 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad.Id!= 0)
+            if (entidad.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            // Verificar que la entidad existe en la base de datos
+            var entidadExistente = this.IConexion!.DetalleVentas!.Find(entidad.Id);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.DetalleVentas!.Remove(entidad);
+            this.IConexion!.DetalleVentas!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -38,10 +41,18 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad.Id!= 0)
+            if (entidad.Id != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            // Validaciones básicas
+            if (entidad.Precio_unitario <= 0)
+                throw new Exception("lbPrecioUnitarioInvalido");
+
+            if (entidad.Cantidad <= 0)
+                throw new Exception("lbCantidadInvalida");
+
+            if (entidad.Subtotal <= 0)
+                throw new Exception("lbSubtotalInvalido");
 
             this.IConexion!.DetalleVentas!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +61,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<DetalleVentas> Listar()
         {
-            return this.IConexion!.DetalleVentas!.Take(20).ToList();
+            var detalleVentas = this.IConexion!.DetalleVentas!.Take(20).ToList();
+            return detalleVentas ?? new List<DetalleVentas>();
         }
 
         public DetalleVentas? Modificar(DetalleVentas? entidad)
@@ -61,12 +73,20 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.DetalleVentas!.Find(entidad.Id);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<DetalleVentas>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Precio_unitario = entidad.Precio_unitario;
+            entidadExistente.Cantidad = entidad.Cantidad;
+            entidadExistente.Subtotal = entidad.Subtotal;
+            entidadExistente.Descuento = entidad.Descuento;
+            entidadExistente.Tipo_producto_vendido = entidad.Tipo_producto_vendido;
+            entidadExistente.Venta = entidad.Venta;
+            entidadExistente.Comic = entidad.Comic;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

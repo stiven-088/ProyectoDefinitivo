@@ -26,9 +26,11 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id_inventario == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Inventarios!.Find(entidad.Id_inventario);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Inventarios!.Remove(entidad);
+            this.IConexion!.Inventarios!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -41,7 +43,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad.Id_inventario != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Tipo_producto))
+                throw new Exception("lbTipoProductoRequerido");
+
+            if (entidad.Stock < 0)
+                throw new Exception("lbStockInvalido");
+
+            if (entidad.Fecha_actualizacion == default(DateTime))
+                entidad.Fecha_actualizacion = DateTime.Now;
 
             this.IConexion!.Inventarios!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +59,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Inventarios> Listar()
         {
-            return this.IConexion!.Inventarios!.Take(20).ToList();
+            var inventarios = this.IConexion!.Inventarios!.Take(20).ToList();
+            return inventarios ?? new List<Inventarios>();
         }
 
         public Inventarios? Modificar(Inventarios? entidad)
@@ -61,12 +71,18 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id_inventario == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Inventarios!.Find(entidad.Id_inventario);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Inventarios>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Tipo_producto = entidad.Tipo_producto;
+            entidadExistente.Stock = entidad.Stock;
+            entidadExistente.Nombre = entidad.Nombre;
+            entidadExistente.Ubicacion = entidad.Ubicacion;
+            entidadExistente.Fecha_actualizacion = DateTime.Now;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

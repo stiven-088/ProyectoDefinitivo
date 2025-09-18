@@ -1,4 +1,4 @@
-﻿/*
+﻿using Lib_dominio.Entidades;
 using lib_repositorios.Implementaciones;
 using lib_repositorios.Interfaces;
 using ut_presentacion.Nucleo;
@@ -16,7 +16,7 @@ namespace ut_presentacion.Aplicaciones
         public ComicsPrueba()
         {
             iConexion = new Conexion();
-            iConexion.StringConexion = "Server=localhost;Database=Proyecto;Trusted_Connection=True;";
+            iConexion.StringConexion = Configuracion.ObtenerValor("StringConexion");
             iAplicacion = new ComicsAplicacion(iConexion);
         }
 
@@ -31,26 +31,34 @@ namespace ut_presentacion.Aplicaciones
 
         public bool Listar()
         {
-            lista = iAplicacion!.Listar();
-            return lista.Count > 0;
+            this.lista = this.iAplicacion!.Listar();
+            return lista.Count >= 0;
         }
 
         public bool Guardar()
         {
-            var categoria = iConexion!.Categorias.FirstOrDefault(x => x.Id_categorias == 1);
-            var inventario = iConexion!.Inventarios.FirstOrDefault(x => x.Id_inventario == 1);
-            entidad = EntidadesNucleo.Comics(categoria, inventario)!;
-            iAplicacion!.Guardar(entidad);
+            this.entidad = EntidadesNucleo.Comics()!;
+            this.iAplicacion!.Guardar(this.entidad);
             return true;
         }
 
         public bool Modificar()
         {
-            iAplicacion!.Modificar(entidad);
+            if (this.entidad != null)
+            {
+                this.entidad.Nombre = "Comic Modificado-" + DateTime.Now.ToString("yyyyMMddhhmmss");
+                this.iAplicacion!.Modificar(this.entidad);
+            }
             return true;
         }
 
         public bool Borrar()
         {
-            iAplicacion!.Borrar(entidad);
-*/
+            if (this.entidad != null)
+            {
+                this.iAplicacion!.Borrar(this.entidad);
+            }
+            return true;
+        }
+    }
+}

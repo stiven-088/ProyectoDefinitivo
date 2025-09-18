@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lib_repositorios.Implementaciones
 {
-    public class EmpleadosAplicacion : Empleados
+    public class EmpleadosAplicacion : IEmpleadosAplicacion
     {
         private IConexion? IConexion = null;
 
@@ -23,12 +23,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_empleado== 0)
+            if (entidad!.Id_empleado == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Empleados!.Find(entidad.Id_empleado);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Empleados!.Remove(entidad);
+            this.IConexion!.Empleados!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -41,7 +43,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad.Id_empleado != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Nombre))
+                throw new Exception("lbNombreRequerido");
+
+            if (string.IsNullOrWhiteSpace(entidad.Puesto))
+                throw new Exception("lbPuestoRequerido");
+
+            if (entidad.Fecha_contratacion == default(DateTime))
+                entidad.Fecha_contratacion = DateTime.Now;
 
             this.IConexion!.Empleados!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +59,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Empleados> Listar()
         {
-            return this.IConexion!.Empleados!.Take(20).ToList();
+            var empleados = this.IConexion!.Empleados!.Take(20).ToList();
+            return empleados ?? new List<Empleados>();
         }
 
         public Empleados? Modificar(Empleados? entidad)
@@ -61,12 +71,18 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id_empleado == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Empleados!.Find(entidad.Id_empleado);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Empleados>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Nombre = entidad.Nombre;
+            entidadExistente.Puesto = entidad.Puesto;
+            entidadExistente.Telefono = entidad.Telefono;
+            entidadExistente.Email = entidad.Email;
+            entidadExistente.Fecha_contratacion = entidad.Fecha_contratacion;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace ut_presentacion.Nucleo
             entidad.Direccion = "Calle 123";
             entidad.Telefono = "3019876543";
             entidad.Fecha_registro = DateTime.Now;
-            entidad.Membresia = 1; // Use existing membresia
+            entidad.Membresia = 1;
             return entidad;
         }
 
@@ -85,8 +85,8 @@ namespace ut_presentacion.Nucleo
             entidad.Autor = "Autor X";
             entidad.Ilustrador = "Ilustrador Y";
             entidad.Precio = 25000;
-            entidad.Categoria = 1; // Use existing categoria
-            entidad.Inventario = 1; // Use existing inventario
+            entidad.Categoria = 1;
+            entidad.Inventario = 1;
             return entidad;
         }
 
@@ -110,8 +110,8 @@ namespace ut_presentacion.Nucleo
             entidad.Aplicacion = "General";
             entidad.Tipo_promocion = "Descuento";
             entidad.Observaciones = "Aplicado al comic";
-            entidad.Promocion = 1; // Use existing promocion
-            entidad.Comic = 1; // Use existing comic
+            entidad.Promocion = 1;
+            entidad.Comic = 1;
             return entidad;
         }
 
@@ -124,7 +124,7 @@ namespace ut_presentacion.Nucleo
             entidad.Cantidad = 3;
             entidad.Total = 75000;
             entidad.Estado_compra = "Pagada";
-            entidad.Cliente = 1; // Use existing cliente
+            entidad.Cliente = 1;
             return entidad;
         }
 
@@ -149,9 +149,9 @@ namespace ut_presentacion.Nucleo
             entidad.Subtotal = 75000;
             entidad.Descuento = 0;
             entidad.Tipo_producto_comprado = "Comic";
-            entidad.Compra = 1; // Use existing compra
-            entidad.Comic = 1; // Use existing comic
-            entidad.Pago = 1; // Use existing pago
+            entidad.Compra = 1;
+            entidad.Comic = 1;
+            entidad.Pago = 1;
             return entidad;
         }
 
@@ -164,9 +164,9 @@ namespace ut_presentacion.Nucleo
             entidad.Metodo_pago = "Efectivo";
             entidad.Estado_venta = "Completada";
             entidad.Tipo_venta = "Mostrador";
-            entidad.Empleado = 1; // Use existing empleado
-            entidad.Proveedor = 1; // Use existing proveedor
-            entidad.Membresia = 1; // Use existing membresia
+            entidad.Empleado = 1;
+            entidad.Proveedor = 1;
+            entidad.Membresia = 1;
             return entidad;
         }
 
@@ -193,8 +193,8 @@ namespace ut_presentacion.Nucleo
             entidad.Fecha_fin = DateTime.Now.AddDays(2);
             entidad.Estado_devolucion = "Pendiente";
             entidad.Cantidad_devuelta = 1;
-            entidad.Cliente = 1; // Use existing cliente
-            entidad.Detalle_compra = 1; // Use existing detalle_compra
+            entidad.Cliente = 1;
+            entidad.Detalle_compra = 1;
             return entidad;
         }
     }

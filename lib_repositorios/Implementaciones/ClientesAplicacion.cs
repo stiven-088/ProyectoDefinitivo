@@ -23,12 +23,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_cliente== 0)
+            if (entidad!.Id_cliente == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Clientes!.Find(entidad.Id_cliente);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Clientes!.Remove(entidad);
+            this.IConexion!.Clientes!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -41,7 +43,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad.Id_cliente != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Nombre))
+                throw new Exception("lbNombreRequerido");
+
+            if (string.IsNullOrWhiteSpace(entidad.Email))
+                throw new Exception("lbEmailRequerido");
+
+            if (entidad.Fecha_registro == default(DateTime))
+                entidad.Fecha_registro = DateTime.Now;
 
             this.IConexion!.Clientes!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +59,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Clientes> Listar()
         {
-            return this.IConexion!.Clientes!.Take(20).ToList();
+            var clientes = this.IConexion!.Clientes!.Take(20).ToList();
+            return clientes ?? new List<Clientes>();
         }
 
         public Clientes? Modificar(Clientes? entidad)
@@ -58,15 +68,21 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_cliente== 0)
+            if (entidad!.Id_cliente == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Clientes!.Find(entidad.Id_cliente);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Clientes>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Nombre = entidad.Nombre;
+            entidadExistente.Email = entidad.Email;
+            entidadExistente.Direccion = entidad.Direccion;
+            entidadExistente.Telefono = entidad.Telefono;
+            entidadExistente.Membresia = entidad.Membresia;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

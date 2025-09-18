@@ -23,12 +23,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_pago== 0)
+            if (entidad!.Id_pago == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Pagos!.Find(entidad.Id_pago);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Pagos!.Remove(entidad);
+            this.IConexion!.Pagos!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -41,7 +43,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad.Id_pago != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Metodo))
+                throw new Exception("lbMetodoRequerido");
+
+            if (entidad.Monto <= 0)
+                throw new Exception("lbMontoInvalido");
+
+            if (entidad.Fecha_pago == default(DateTime))
+                entidad.Fecha_pago = DateTime.Now;
 
             this.IConexion!.Pagos!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +59,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Pagos> Listar()
         {
-            return this.IConexion!.Pagos!.Take(20).ToList();
+            var pagos = this.IConexion!.Pagos!.Take(20).ToList();
+            return pagos ?? new List<Pagos>();
         }
 
         public Pagos? Modificar(Pagos? entidad)
@@ -61,12 +71,18 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id_pago == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Pagos!.Find(entidad.Id_pago);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Pagos>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Metodo = entidad.Metodo;
+            entidadExistente.Fecha_pago = entidad.Fecha_pago;
+            entidadExistente.Monto = entidad.Monto;
+            entidadExistente.Estado = entidad.Estado;
+            entidadExistente.Referencia_transaccion = entidad.Referencia_transaccion;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

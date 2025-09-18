@@ -23,12 +23,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_membresia== 0)
+            if (entidad!.Id_membresia == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Membresias!.Find(entidad.Id_membresia);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Membresias!.Remove(entidad);
+            this.IConexion!.Membresias!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -41,7 +43,17 @@ namespace lib_repositorios.Implementaciones
             if (entidad.Id_membresia != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Tipo))
+                throw new Exception("lbTipoRequerido");
+
+            if (entidad.Precio <= 0)
+                throw new Exception("lbPrecioInvalido");
+
+            if (entidad.Fecha_inicio == default(DateTime))
+                entidad.Fecha_inicio = DateTime.Now;
+
+            if (entidad.Fecha_fin == default(DateTime))
+                entidad.Fecha_fin = DateTime.Now.AddMonths(12);
 
             this.IConexion!.Membresias!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +62,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Membresias> Listar()
         {
-            return this.IConexion!.Membresias!.Take(20).ToList();
+            var membresias = this.IConexion!.Membresias!.Take(20).ToList();
+            return membresias ?? new List<Membresias>();
         }
 
         public Membresias? Modificar(Membresias? entidad)
@@ -61,12 +74,18 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id_membresia == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Membresias!.Find(entidad.Id_membresia);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Membresias>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Tipo = entidad.Tipo;
+            entidadExistente.Precio = entidad.Precio;
+            entidadExistente.Beneficio = entidad.Beneficio;
+            entidadExistente.Fecha_inicio = entidad.Fecha_inicio;
+            entidadExistente.Fecha_fin = entidad.Fecha_fin;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

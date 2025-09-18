@@ -6,7 +6,6 @@ namespace lib_repositorios.Implementaciones
 {
     public class PromocionesAplicacion : IPromocionesAplicacion
     {
-    
         private IConexion? IConexion = null;
 
         public PromocionesAplicacion(IConexion iConexion)
@@ -24,12 +23,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_promocion== 0)
+            if (entidad!.Id_promocion == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Promociones!.Find(entidad.Id_promocion);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Promociones!.Remove(entidad);
+            this.IConexion!.Promociones!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -42,7 +43,17 @@ namespace lib_repositorios.Implementaciones
             if (entidad.Id_promocion != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Descripcion))
+                throw new Exception("lbDescripcionRequerida");
+
+            if (entidad.Descuento <= 0 || entidad.Descuento > 100)
+                throw new Exception("lbDescuentoInvalido");
+
+            if (entidad.Fecha_inicio == default(DateTime))
+                entidad.Fecha_inicio = DateTime.Now;
+
+            if (entidad.Fecha_fin == default(DateTime))
+                entidad.Fecha_fin = DateTime.Now.AddMonths(1);
 
             this.IConexion!.Promociones!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -51,7 +62,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Promociones> Listar()
         {
-            return this.IConexion!.Promociones!.Take(20).ToList();
+            var promociones = this.IConexion!.Promociones!.Take(20).ToList();
+            return promociones ?? new List<Promociones>();
         }
 
         public Promociones? Modificar(Promociones? entidad)
@@ -62,12 +74,18 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id_promocion == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Promociones!.Find(entidad.Id_promocion);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Promociones>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Descripcion = entidad.Descripcion;
+            entidadExistente.Descuento = entidad.Descuento;
+            entidadExistente.Fecha_inicio = entidad.Fecha_inicio;
+            entidadExistente.Fecha_fin = entidad.Fecha_fin;
+            entidadExistente.Codigo = entidad.Codigo;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

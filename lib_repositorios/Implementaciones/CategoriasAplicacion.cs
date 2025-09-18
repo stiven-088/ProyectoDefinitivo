@@ -23,12 +23,15 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_categorias== 0)
+            if (entidad!.Id_categorias == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            
+            var entidadExistente = this.IConexion!.Categorias!.Find(entidad.Id_categorias);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Categorias!.Remove(entidad);
+            this.IConexion!.Categorias!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -41,7 +44,12 @@ namespace lib_repositorios.Implementaciones
             if (entidad.Id_categorias != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            
+            if (string.IsNullOrWhiteSpace(entidad.Nombre))
+                throw new Exception("lbNombreRequerido");
+
+            if (entidad.Fecha_creacion == default(DateTime))
+                entidad.Fecha_creacion = DateTime.Now;
 
             this.IConexion!.Categorias!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +58,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Categorias> Listar()
         {
-            return this.IConexion!.Categorias!.Take(20).ToList();
+            var categorias = this.IConexion!.Categorias!.Take(20).ToList();
+            return categorias ?? new List<Categorias>();
         }
 
         public Categorias? Modificar(Categorias? entidad)
@@ -61,12 +70,17 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id_categorias == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Categorias!.Find(entidad.Id_categorias);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Categorias>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Nombre = entidad.Nombre;
+            entidadExistente.Descripcion = entidad.Descripcion;
+            entidadExistente.Estado = entidad.Estado;
+            entidadExistente.Prioridad = entidad.Prioridad;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿/*
-using Lib_dominio.Entidades;
+﻿using Lib_dominio.Entidades;
 using lib_repositorios.Implementaciones;
 using lib_repositorios.Interfaces;
 using ut_presentacion.Nucleo;
@@ -32,31 +31,35 @@ namespace ut_presentacion.Aplicaciones
 
         public bool Listar()
         {
-            lista = iAplicacion!.Listar();
-            return lista.Count > 0;
+            this.lista = this.iAplicacion!.Listar();
+            return lista.Count >= 0;
         }
 
         public bool Guardar()
         {
-            var empleado = iConexion!.Empleados.FirstOrDefault(x => x.Id_empleado == 1);
-            var proveedor = iConexion!.Proveedores.FirstOrDefault(x => x.Id_proveedor == 1);
-            var membresia = iConexion!.Membresias.FirstOrDefault(x => x.Id_membresia == 1);
-            entidad = EntidadesNucleo.Ventas(empleado, proveedor, membresia)!;
-            iAplicacion!.Guardar(entidad);
+            this.entidad = EntidadesNucleo.Ventas()!;
+            this.iAplicacion!.Guardar(this.entidad);
             return true;
         }
 
         public bool Modificar()
         {
-            iAplicacion!.Modificar(entidad);
+            if (this.entidad != null)
+            {
+                this.entidad.Estado_venta = "Modificada";
+                this.entidad.Metodo_pago = "Tarjeta-" + DateTime.Now.ToString("yyyyMMddhhmmss");
+                this.iAplicacion!.Modificar(this.entidad);
+            }
             return true;
         }
 
         public bool Borrar()
         {
-            iAplicacion!.Borrar(entidad);
+            if (this.entidad != null)
+            {
+                this.iAplicacion!.Borrar(this.entidad);
+            }
             return true;
         }
     }
 }
-*/

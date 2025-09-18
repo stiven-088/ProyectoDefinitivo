@@ -23,12 +23,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_venta== 0)
+            if (entidad!.Id_venta == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Ventas!.Find(entidad.Id_venta);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Ventas!.Remove(entidad);
+            this.IConexion!.Ventas!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -38,10 +40,17 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad.Id_venta!= 0)
+            if (entidad.Id_venta != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (entidad.Total <= 0)
+                throw new Exception("lbTotalInvalido");
+
+            if (string.IsNullOrWhiteSpace(entidad.Metodo_pago))
+                throw new Exception("lbMetodoPagoRequerido");
+
+            if (entidad.Fecha_venta == default(DateTime))
+                entidad.Fecha_venta = DateTime.Now;
 
             this.IConexion!.Ventas!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +59,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Ventas> Listar()
         {
-            return this.IConexion!.Ventas!.Take(20).ToList();
+            var ventas = this.IConexion!.Ventas!.Take(20).ToList();
+            return ventas ?? new List<Ventas>();
         }
 
         public Ventas? Modificar(Ventas? entidad)
@@ -61,12 +71,21 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id_venta == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Ventas!.Find(entidad.Id_venta);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Ventas>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Fecha_venta = entidad.Fecha_venta;
+            entidadExistente.Total = entidad.Total;
+            entidadExistente.Metodo_pago = entidad.Metodo_pago;
+            entidadExistente.Estado_venta = entidad.Estado_venta;
+            entidadExistente.Tipo_venta = entidad.Tipo_venta;
+            entidadExistente.Empleado = entidad.Empleado;
+            entidadExistente.Proveedor = entidad.Proveedor;
+            entidadExistente.Membresia = entidad.Membresia;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }

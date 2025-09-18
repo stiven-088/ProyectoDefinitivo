@@ -26,9 +26,11 @@ namespace lib_repositorios.Implementaciones
             if (entidad!.Id_comic == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Comics!.Find(entidad.Id_comic);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            this.IConexion!.Comics!.Remove(entidad);
+            this.IConexion!.Comics!.Remove(entidadExistente);
             this.IConexion.SaveChanges();
             return entidad;
         }
@@ -38,10 +40,14 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad.Id_comic!= 0)
+            if (entidad.Id_comic != 0)
                 throw new Exception("lbYaSeGuardo");
 
-            // Operaciones
+            if (string.IsNullOrWhiteSpace(entidad.Nombre))
+                throw new Exception("lbNombreRequerido");
+
+            if (entidad.Precio <= 0)
+                throw new Exception("lbPrecioInvalido");
 
             this.IConexion!.Comics!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -50,7 +56,8 @@ namespace lib_repositorios.Implementaciones
 
         public List<Comics> Listar()
         {
-            return this.IConexion!.Comics!.Take(20).ToList();
+            var comics = this.IConexion!.Comics!.Take(20).ToList();
+            return comics ?? new List<Comics>();
         }
 
         public Comics? Modificar(Comics? entidad)
@@ -58,15 +65,23 @@ namespace lib_repositorios.Implementaciones
             if (entidad == null)
                 throw new Exception("lbFaltaInformacion");
 
-            if (entidad!.Id_comic== 0)
+            if (entidad!.Id_comic == 0)
                 throw new Exception("lbNoSeGuardo");
 
-            // Operaciones
+            var entidadExistente = this.IConexion!.Comics!.Find(entidad.Id_comic);
+            if (entidadExistente == null)
+                throw new Exception("lbEntidadNoEncontrada");
 
-            var entry = this.IConexion!.Entry<Comics>(entidad);
-            entry.State = EntityState.Modified;
+            entidadExistente.Nombre = entidad.Nombre;
+            entidadExistente.Editorial = entidad.Editorial;
+            entidadExistente.Autor = entidad.Autor;
+            entidadExistente.Ilustrador = entidad.Ilustrador;
+            entidadExistente.Precio = entidad.Precio;
+            entidadExistente.Categoria = entidad.Categoria;
+            entidadExistente.Inventario = entidad.Inventario;
+
             this.IConexion.SaveChanges();
-            return entidad;
+            return entidadExistente;
         }
     }
 }
