@@ -1,5 +1,4 @@
 ﻿
-
 using Lib_dominio.Entidades;
 using lib_repositorios.Implementaciones;
 using lib_repositorios.Interfaces;
@@ -8,18 +7,18 @@ using ut_presentacion.Nucleo;
 namespace ut_presentacion.Aplicaciones
 {
     [TestClass]
-    public class InventariosPrueba
+    public class CategoriasPrueba
     {
-        private readonly InventariosAplicacion? iAplicacion;
+        private readonly ICategoriasAplicacion? iAplicacion;
         private readonly IConexion? iConexion;
-        private List<Inventarios>? lista;
-        private Inventarios? entidad;
+        private List<Categorias>? lista;
+        private Categorias? entidad;
 
-        public InventariosPrueba()
+        public CategoriasPrueba()
         {
             iConexion = new Conexion();
             iConexion.StringConexion = Configuracion.ObtenerValor("StringConexion");
-            iAplicacion = new InventariosAplicacion(iConexion);
+            iAplicacion = new CategoriasAplicacion(iConexion);
         }
 
         [TestMethod]
@@ -39,7 +38,8 @@ namespace ut_presentacion.Aplicaciones
 
         public bool Guardar()
         {
-            this.entidad = EntidadesNucleo.Inventarios()!;
+            var Membresia= this.iConexion.Membresias.FirstOrDefault(x => x.Id_membresia== 1);
+            this.entidad = EntidadesNucleo.Categorias()!;
             this.iAplicacion!.Guardar(this.entidad);
             return true;
         }
