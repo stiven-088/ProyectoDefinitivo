@@ -146,27 +146,27 @@ GO
 
 -- EMPLEADOS
 INSERT INTO [Empleados] ([Nombre], [Puesto], [Telefono], [Email], [Fecha_contratacion]) VALUES
-('Juan Pérez', 'Cajero', '3001234567', 'juan@comicstore.com', '2023-01-15'),
-('Laura Gómez', 'Vendedora', '3019876543', 'laura@comicstore.com', '2022-05-20'),
+('Juan Pï¿½rez', 'Cajero', '3001234567', 'juan@comicstore.com', '2023-01-15'),
+('Laura Gï¿½mez', 'Vendedora', '3019876543', 'laura@comicstore.com', '2022-05-20'),
 ('Carlos Ruiz', 'Administrador', '3124567890', 'carlos@comicstore.com', '2021-10-10'),
 ('Marta Silva', 'Bodeguera', '3156781234', 'marta@comicstore.com', '2023-03-01'),
-('Andrés Díaz', 'Vendedor', '3167896543', 'andres@comicstore.com', '2024-02-28');
+('Andrï¿½s Dï¿½az', 'Vendedor', '3167896543', 'andres@comicstore.com', '2024-02-28');
 
 -- CATEGORIAS
 INSERT INTO [Categorias] ([Nombre], [Descripcion], [Estado], [Prioridad], [Fecha_creacion]) VALUES
-('Superhéroes', 'Comics de Marvel y DC', 1, 1, '2024-04-24'),
+('Superhï¿½roes', 'Comics de Marvel y DC', 1, 1, '2024-04-24'),
 ('Manga', 'Historietas japonesas', 1, 2, '2024-04-24'),
 ('Independiente', 'Editoriales independientes', 1, 3, '2024-04-24'),
-('Novela Gráfica', 'Historias largas y autoconclusivas', 1, 4, '2024-04-24'),
-('Infantil', 'Comics para niños', 1, 5, '2024-04-24');
+('Novela Grï¿½fica', 'Historias largas y autoconclusivas', 1, 4, '2024-04-24'),
+('Infantil', 'Comics para niï¿½os', 1, 5, '2024-04-24');
 
 -- INVENTARIOS
 INSERT INTO [Inventarios] ([Nombre], [Stock], [Ubicacion], [Tipo_producto], [Fecha_actualizacion]) VALUES
 ('Bodega Principal', 150, 'Piso 1', 'Comic', '2024-04-24'),
 ('Bodega Secundaria', 75, 'Piso 2', 'Comic', '2024-04-24'),
-('Estantería A', 40, 'Zona de ventas', 'Comic', '2024-04-24'),
-('Estantería B', 30, 'Zona de ventas', 'Comic', '2024-04-24'),
-('Depósito Extra', 60, 'Sótano', 'Manga', '2024-04-24');
+('Estanterï¿½a A', 40, 'Zona de ventas', 'Comic', '2024-04-24'),
+('Estanterï¿½a B', 30, 'Zona de ventas', 'Comic', '2024-04-24'),
+('Depï¿½sito Extra', 60, 'Sï¿½tano', 'Manga', '2024-04-24');
 
 -- MEMBRESIAS
 INSERT INTO [Membresias] ([Tipo], [Precio], [Beneficio], [Fecha_inicio], [Fecha_fin]) VALUES
@@ -179,14 +179,14 @@ INSERT INTO [Membresias] ([Tipo], [Precio], [Beneficio], [Fecha_inicio], [Fecha_
 -- CLIENTES
 INSERT INTO [Clientes] ([Nombre], [Email], [Direccion], [Telefono], [Fecha_registro], [Membresia]) VALUES
 ('Pedro Torres', 'pedro@email.com', 'Calle 10 #5-23', '3201234567', '2024-04-01', 1),
-('Ana López', 'ana@email.com', 'Cra 12 #8-10', '3219876543', '2024-03-25', 2),
-('Luis Ramírez', 'luis@email.com', 'Av 15 #9-30', '3226547890', '2024-04-10', 3),
-('Claudia Ríos', 'claudia@email.com', 'Calle 7 #11-22', '3008765432', '2024-03-15', 4),
+('Ana Lï¿½pez', 'ana@email.com', 'Cra 12 #8-10', '3219876543', '2024-03-25', 2),
+('Luis Ramï¿½rez', 'luis@email.com', 'Av 15 #9-30', '3226547890', '2024-04-10', 3),
+('Claudia Rï¿½os', 'claudia@email.com', 'Calle 7 #11-22', '3008765432', '2024-03-15', 4),
 ('Felipe Mora', 'felipe@email.com', 'Cra 8 #6-15', '3104567890', '2024-04-05', 5);
 
 -- COMICS
 INSERT INTO [Comics] ([Nombre], [Editorial], [Autor], [Ilustrador], [Precio], [Categoria], [Inventario]) VALUES
-('Batman Año Uno', 'DC', 'Frank Miller', 'David Mazzucchelli', 45000, 1, 1),
+('Batman Aï¿½o Uno', 'DC', 'Frank Miller', 'David Mazzucchelli', 45000, 1, 1),
 ('Naruto Vol.1', 'Shueisha', 'Masashi Kishimoto', 'Masashi Kishimoto', 38000, 2, 2),
 ('Spider-Man Azul', 'Marvel', 'Jeph Loeb', 'Tim Sale', 50000, 1, 3),
 ('One Piece Vol.10', 'Shueisha', 'Eiichiro Oda', 'Eiichiro Oda', 40000, 2, 4),
@@ -194,10 +194,10 @@ INSERT INTO [Comics] ([Nombre], [Editorial], [Autor], [Ilustrador], [Precio], [C
 
 -- PROVEEDORES
 INSERT INTO [Proveedores] ([Nombre], [Telefono], [Email], [Direccion], [Ciudad]) VALUES
-('Distribuciones Comics SAS', '3124567890', 'ventas@comics.com', 'Calle 20 #4-30', 'Bogotá'),
-('Manga Express', '3112345678', 'contacto@mangaexpress.com', 'Av 3 #15-40', 'Medellín'),
+('Distribuciones Comics SAS', '3124567890', 'ventas@comics.com', 'Calle 20 #4-30', 'Bogotï¿½'),
+('Manga Express', '3112345678', 'contacto@mangaexpress.com', 'Av 3 #15-40', 'Medellï¿½n'),
 ('Marvel Colombia', '3209876543', 'info@marvelcol.com', 'Cra 7 #45-21', 'Cali'),
-('DC Distribuciones', '3107654321', 'ventas@dcdistribuciones.com', 'Calle 30 #8-10', 'Bogotá'),
+('DC Distribuciones', '3107654321', 'ventas@dcdistribuciones.com', 'Calle 30 #8-10', 'Bogotï¿½'),
 ('Indie Books', '3191234567', 'info@indiebooks.com', 'Cra 9 #14-20', 'Barranquilla');
 
 -- VENTAS
@@ -214,7 +214,7 @@ INSERT INTO [Detalle_Ventas] ([Precio_unitario], [Cantidad], [Subtotal], [Descue
 (38000, 1, 38000, 0, 'Manga', 2, 2),
 (50000, 1, 50000, 5, 'Comic', 3, 3),
 (40000, 2, 80000, 10, 'Manga', 4, 4),
-(60000, 2, 120000, 0, 'Novela Gráfica', 5, 5);
+(60000, 2, 120000, 0, 'Novela Grï¿½fica', 5, 5);
 
 -- PAGOS
 INSERT INTO [Pagos] ([Metodo], [Monto], [Estado], [Referencia_transaccion], [Fecha_pago]) VALUES
@@ -226,7 +226,7 @@ INSERT INTO [Pagos] ([Metodo], [Monto], [Estado], [Referencia_transaccion], [Fec
 
 -- COMPRAS
 INSERT INTO [Compras] ([Fecha_compra], [Nombre_comic], [Cantidad], [Total], [Estado_compra], [Cliente]) VALUES
-('2024-04-24', 'Batman Año Uno', 1, 45000, 'Entregada', 1),
+('2024-04-24', 'Batman Aï¿½o Uno', 1, 45000, 'Entregada', 1),
 ('2024-04-23', 'Naruto Vol.1', 1, 38000, 'Entregada', 2),
 ('2024-04-22', 'Spider-Man Azul', 1, 50000, 'En camino', 3),
 ('2024-04-21', 'One Piece Vol.10', 2, 80000, 'Entregada', 4),
@@ -238,13 +238,13 @@ INSERT INTO [Detalle_compras] ([Precio_unitario], [Cantidad], [Subtotal], [Descu
 (38000, 1, 38000, 0, 'Manga', 2, 2, 2),
 (50000, 1, 50000, 5, 'Comic', 3, 3, 3),
 (40000, 2, 80000, 10, 'Manga', 4, 4, 4),
-(60000, 2, 120000, 0, 'Novela Gráfica', 5, 5, 5);
+(60000, 2, 120000, 0, 'Novela Grï¿½fica', 5, 5, 5);
 
 -- DEVOLUCIONES
 INSERT INTO [Devoluciones] ([Motivo], [Fecha_inicio], [Fecha_fin], [Estado_devolucion], [Cantidad_devuelta], [Cliente], [Detalle_compra]) VALUES
-('Defecto de impresión', '2024-04-24', '2024-04-24', 'Procesada', 1, 1, 1),
+('Defecto de impresiï¿½n', '2024-04-24', '2024-04-24', 'Procesada', 1, 1, 1),
 ('Hojas sueltas', '2024-04-23', '2024-04-23', 'Procesada', 1, 2, 2),
-('Daño en portada', '2024-04-22', '2024-04-22', 'Pendiente', 1, 3, 3),
+('Daï¿½o en portada', '2024-04-22', '2024-04-22', 'Pendiente', 1, 3, 3),
 ('Entrega incorrecta', '2024-04-21', '2024-04-21', 'Procesada', 2, 4, 4),
 ('Producto repetido', '2024-04-20', '2024-04-20', 'Pendiente', 2, 5, 5);
 
@@ -258,10 +258,10 @@ INSERT INTO [Promociones] ([Descripcion], [Descuento], [Fecha_inicio], [Fecha_fi
 
 -- COMIC_PROMOCIONES
 INSERT INTO [Comic_promociones] ([Fecha_asignacion], [Estado], [Aplicacion], [Tipo_promocion], [Observaciones], [Promocion], [Comic]) VALUES
-('2024-04-24', 'Activa', 'Descuento directo', 'General', 'Aplica a toda la categoría', 1, 1),
+('2024-04-24', 'Activa', 'Descuento directo', 'General', 'Aplica a toda la categorï¿½a', 1, 1),
 ('2024-04-23', 'Activa', 'Descuento directo', 'Especial', 'Solo para este comic', 2, 2),
-('2024-04-22', 'Activa', 'Descuento directo', 'General', 'Aplica a toda la categoría', 3, 3),
-('2024-04-21', 'Inactiva', 'Código promocional', 'General', 'Necesita código para aplicar', 4, 4),
+('2024-04-22', 'Activa', 'Descuento directo', 'General', 'Aplica a toda la categorï¿½a', 3, 3),
+('2024-04-21', 'Inactiva', 'Cï¿½digo promocional', 'General', 'Necesita cï¿½digo para aplicar', 4, 4),
 ('2024-04-20', 'Activa', 'Descuento directo', 'Especial', 'Solo para este comic', 5, 5);
 
 

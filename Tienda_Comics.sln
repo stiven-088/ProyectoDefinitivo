@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Presentaciones", "1. Presentaciones", "{5A76C093-DFCF-434F-98A1-3E775557223A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Servicios", "2. Servicios", "{EA8ABB84-4818-4F7F-9E8B-00CF78129712}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\Documentos\SQL Server Management Studio 21\base de datos.sql = ..\..\Documentos\SQL Server Management Studio 21\base de datos.sql
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Nucleo", "3. Nucleo", "{2FDF04A7-15E5-4D3C-B26E-46F87BA8EC0A}"
 EndProject
@@ -25,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lib_repositorios", "lib_repositorios\lib_repositorios.csproj", "{7AF647C4-A5B0-45CD-BD17-04B46D55814A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "asp_servicios", "asp_servicios\asp_servicios.csproj", "{CDB50336-A17F-4A2A-996A-61DC159E5F3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +43,10 @@ Global
 		{7AF647C4-A5B0-45CD-BD17-04B46D55814A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AF647C4-A5B0-45CD-BD17-04B46D55814A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AF647C4-A5B0-45CD-BD17-04B46D55814A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDB50336-A17F-4A2A-996A-61DC159E5F3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDB50336-A17F-4A2A-996A-61DC159E5F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDB50336-A17F-4A2A-996A-61DC159E5F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDB50336-A17F-4A2A-996A-61DC159E5F3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +55,7 @@ Global
 		{7A05A193-1DA8-403E-BF9A-FD820EB82912} = {2FDF04A7-15E5-4D3C-B26E-46F87BA8EC0A}
 		{AE8ED129-9130-4729-BA06-3AC23A7AB335} = {F582AA43-2ED4-4BC1-9FDC-D98F794378B9}
 		{7AF647C4-A5B0-45CD-BD17-04B46D55814A} = {EA8ABB84-4818-4F7F-9E8B-00CF78129712}
+		{CDB50336-A17F-4A2A-996A-61DC159E5F3F} = {EA8ABB84-4818-4F7F-9E8B-00CF78129712}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2243E995-A641-401C-951B-811953000EA7}
